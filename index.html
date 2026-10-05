@@ -1,0 +1,2442 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profes Libres con IA | Recupera de 5 a 10 Horas Semanales con el Método ROL</title>
+  <meta name="description" content="Comunidad y sistema práctico de IA para docentes de Chile y Latinoamérica. Reduce de 5 a 10 horas de burocracia escolar cada semana con el Método ROL.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* -------------------------------------------------------------
+       VARIABLES Y RESET
+    -------------------------------------------------------------- */
+    :root {
+      --bg-main: #0B0F19;
+      --bg-card: #131B2E;
+      --bg-card-subtle: #18233C;
+      --bg-card-hover: #1E2D4E;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(245, 158, 11, 0.4);
+      --text-primary: #F8FAFC;
+      --text-secondary: #94A3B8;
+      --text-muted: #64748B;
+      --amber: #F59E0B;
+      --amber-hover: #D97706;
+      --amber-light: #FEF3C7;
+      --amber-glow: rgba(245, 158, 11, 0.18);
+      --amber-gradient: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+      --emerald: #10B981;
+      --emerald-bg: rgba(16, 185, 129, 0.12);
+      --rose: #F43F5E;
+      --rose-bg: rgba(244, 63, 94, 0.12);
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 22px;
+      --radius-xl: 32px;
+      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.25);
+      --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.45);
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      color-scheme: dark;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      font-size: 16px;
+    }
+
+    /* Fondo ambiental sutil */
+    .ambient-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background: 
+        radial-gradient(circle at 15% 20%, rgba(245, 158, 11, 0.05) 0%, transparent 45%),
+        radial-gradient(circle at 85% 60%, rgba(30, 58, 138, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 50% 90%, rgba(245, 158, 11, 0.04) 0%, transparent 60%);
+    }
+
+    /* -------------------------------------------------------------
+       LAYOUT Y CONTENEDORES
+    -------------------------------------------------------------- */
+    .container {
+      width: 100%;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .container-narrow {
+      max-width: 860px;
+    }
+
+    section {
+      padding: 96px 0;
+      position: relative;
+    }
+
+    @media (max-width: 768px) {
+      section {
+        padding: 60px 0;
+      }
+    }
+
+    /* -------------------------------------------------------------
+       NAVBAR SUPERIOR
+    -------------------------------------------------------------- */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: rgba(11, 15, 25, 0.82);
+      border-bottom: 1px solid var(--border-color);
+      transition: var(--transition);
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--amber-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      color: #0B0F19;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+    }
+
+    .brand-highlight {
+      color: var(--amber);
+    }
+
+    /* -------------------------------------------------------------
+       CONTEO REGRESIVO DE URGENCIA (HEADER)
+    -------------------------------------------------------------- */
+    .nav-countdown-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid #F59E0B;
+      box-shadow: 0 0 18px rgba(245, 158, 11, 0.25), inset 0 0 10px rgba(245, 158, 11, 0.08);
+      border-radius: 9999px;
+      padding: 5px 16px 5px 14px;
+      backdrop-filter: blur(10px);
+      transition: var(--transition);
+      animation: pulseBorderMustard 3.5s ease-in-out infinite;
+    }
+
+    @keyframes pulseBorderMustard {
+      0%, 100% {
+        border-color: #F59E0B;
+        box-shadow: 0 0 16px rgba(245, 158, 11, 0.22), inset 0 0 10px rgba(245, 158, 11, 0.05);
+      }
+      50% {
+        border-color: #FBBF24;
+        box-shadow: 0 0 24px rgba(245, 158, 11, 0.45), inset 0 0 16px rgba(245, 158, 11, 0.15);
+      }
+    }
+
+    .countdown-info-col {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.15;
+    }
+
+    .countdown-tag-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .countdown-pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #EF4444;
+      box-shadow: 0 0 8px #EF4444;
+      animation: blinkDot 1.2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes blinkDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .countdown-headline {
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: #F59E0B;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .countdown-subtext {
+      font-size: 0.70rem;
+      color: #CBD5E1;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .countdown-timer {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .timer-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #0B0F19;
+      border: 1.5px solid #F59E0B;
+      border-radius: 7px;
+      min-width: 36px;
+      padding: 3px 5px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      transition: var(--transition);
+    }
+
+    .timer-unit:hover {
+      border-color: #FBBF24;
+      transform: translateY(-1px);
+    }
+
+    .timer-num {
+      font-family: var(--font-mono);
+      font-size: 1.02rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      line-height: 1;
+    }
+
+    .timer-sub {
+      font-size: 0.60rem;
+      font-weight: 700;
+      color: #F59E0B;
+      letter-spacing: 0.05em;
+      margin-top: 2px;
+      line-height: 1;
+    }
+
+    .timer-sep {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      font-weight: 800;
+      color: #F59E0B;
+      margin-top: -5px;
+      animation: blinkDot 1s ease-in-out infinite;
+    }
+
+    @media (max-width: 960px) {
+      .countdown-subtext {
+        display: none;
+      }
+      .nav-countdown-wrapper {
+        gap: 8px;
+        padding: 4px 10px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 8px 0;
+      }
+      .nav-container {
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+        height: auto;
+      }
+      .nav-countdown-wrapper {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        border-radius: 14px;
+        padding: 6px 12px;
+      }
+      .countdown-subtext {
+        display: block;
+      }
+    }
+
+    /* -------------------------------------------------------------
+       COMPONENTES: BOTONES, BADGES Y ETIQUETAS
+    -------------------------------------------------------------- */
+    .btn-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: var(--amber-gradient);
+      color: #0B0F19;
+      font-weight: 700;
+      font-size: 1.05rem;
+      padding: 16px 32px;
+      border-radius: 9999px;
+      text-decoration: none;
+      box-shadow: 0 8px 24px rgba(245, 158, 11, 0.35);
+      transition: var(--transition);
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      text-align: center;
+    }
+
+    .btn-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(245, 158, 11, 0.45);
+      background: linear-gradient(135deg, #FBBF24 0%, #EA580C 100%);
+      color: #050811;
+    }
+
+    .btn-cta:active {
+      transform: translateY(0);
+    }
+
+    .btn-cta-nav {
+      padding: 10px 22px;
+      font-size: 0.92rem;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: var(--amber);
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 20px;
+    }
+
+    .friction-zero {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 14px;
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+    }
+
+    .friction-zero svg {
+      width: 16px;
+      height: 16px;
+      color: var(--amber);
+      flex-shrink: 0;
+    }
+
+    /* -------------------------------------------------------------
+       FASE 1: ATENCIÓN (HERO SECTION)
+    -------------------------------------------------------------- */
+    .hero-section {
+      padding: 70px 0 90px;
+      position: relative;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: center;
+      gap: 48px;
+    }
+
+    .hero-text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .hero-title {
+      font-size: clamp(2.3rem, 4.4vw, 3.4rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 22px;
+      color: #FFFFFF;
+    }
+
+    .hero-title .highlight {
+      background: linear-gradient(135deg, #F59E0B 20%, #FBBF24 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.08rem, 1.8vw, 1.25rem);
+      color: #CBD5E1;
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+
+    .hero-subtitle strong {
+      color: #FFFFFF;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+      margin-bottom: 32px;
+    }
+
+    .hero-character-wrap {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-character-card {
+      position: relative;
+      background: radial-gradient(circle at 50% 30%, rgba(245, 158, 11, 0.15), transparent 70%),
+                  linear-gradient(180deg, var(--bg-card) 0%, rgba(19, 27, 46, 0.6) 100%);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      border-radius: 40px;
+      padding: 36px 30px;
+      text-align: center;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), 0 0 35px rgba(245, 158, 11, 0.1);
+      backdrop-filter: blur(10px);
+      width: 100%;
+      max-width: 440px;
+      transition: var(--transition);
+    }
+
+    .hero-character-card:hover {
+      border-color: rgba(245, 158, 11, 0.5);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 45px rgba(245, 158, 11, 0.2);
+    }
+
+    .hero-img {
+      width: 100%;
+      max-width: 320px;
+      height: auto;
+      border-radius: 28px;
+      filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.45));
+      animation: charFloatHero 4.8s ease-in-out infinite;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+      cursor: pointer;
+    }
+
+    .hero-img:hover {
+      transform: scale(1.05) translateY(-8px);
+      filter: drop-shadow(0 20px 35px rgba(245, 158, 11, 0.4));
+    }
+
+    @keyframes charFloatHero {
+      0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+      25% {
+        transform: translateY(-8px) rotate(1.2deg);
+      }
+      50% {
+        transform: translateY(-14px) rotate(0deg);
+      }
+      75% {
+        transform: translateY(-6px) rotate(-1.2deg);
+      }
+    }
+
+    .hero-character-badge {
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1E293B;
+      border: 1px solid var(--border-focus);
+      color: #F8FAFC;
+      padding: 8px 20px;
+      border-radius: 9999px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .hero-character-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--amber);
+      box-shadow: 0 0 10px var(--amber);
+    }
+
+    /* Barra de Credibilidad */
+    .credibility-bar {
+      margin-top: 50px;
+      padding: 20px 24px;
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      backdrop-filter: blur(8px);
+    }
+
+    .author-avatar-wrap {
+      position: relative;
+      width: 56px;
+      height: 56px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .author-avatar-img {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center center;
+      border: 2.5px solid #F59E0B;
+      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
+      cursor: pointer;
+      position: relative;
+      z-index: 5;
+      transform-origin: center center;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+    }
+
+    .author-avatar-img:hover {
+      transform: scale(2);
+      border-color: #FBBF24;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.75), 0 0 25px rgba(245, 158, 11, 0.6);
+      z-index: 50;
+    }
+
+    .author-info h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 2px;
+    }
+
+    .author-info p {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.45;
+    }
+
+    @media (max-width: 992px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 50px;
+      }
+      .hero-text {
+        text-align: center;
+        align-items: center;
+      }
+      .hero-cta-group {
+        align-items: center;
+      }
+      .credibility-bar {
+        text-align: left;
+      }
+    }
+
+    /* -------------------------------------------------------------
+       FASE 2: INTERÉS (EMPATÍA Y PUNTOS DE DOLOR)
+    -------------------------------------------------------------- */
+    .section-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .section-eyebrow {
+      color: var(--amber);
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 3.2vw, 2.7rem);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: #FFFFFF;
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+
+    .section-desc {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .pain-points-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .pain-character-box {
+      background: radial-gradient(circle at 50% 30%, rgba(244, 63, 94, 0.12), transparent 70%),
+                  linear-gradient(180deg, #18223B 0%, rgba(19, 27, 46, 0.8) 100%);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+      border-radius: 40px;
+      padding: 38px 28px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), 0 0 35px rgba(244, 63, 94, 0.08);
+      transition: var(--transition);
+    }
+
+    .pain-character-box:hover {
+      border-color: rgba(244, 63, 94, 0.5);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 45px rgba(244, 63, 94, 0.15);
+    }
+
+    .pain-character-img {
+      width: 100%;
+      max-width: 280px;
+      height: auto;
+      margin-bottom: 20px;
+      border-radius: 28px;
+      filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.55));
+      animation: charStressedBob 3.8s ease-in-out infinite;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+      cursor: pointer;
+    }
+
+    .pain-character-img:hover {
+      transform: scale(1.05) translateY(-6px);
+      filter: drop-shadow(0 20px 35px rgba(244, 63, 94, 0.35));
+    }
+
+    @keyframes charStressedBob {
+      0%, 100% {
+        transform: translateY(0) scale(1) rotate(0deg);
+      }
+      20% {
+        transform: translateY(-5px) scale(0.99) rotate(-1.5deg);
+      }
+      40% {
+        transform: translateY(2px) scale(1.01) rotate(1.2deg);
+      }
+      60% {
+        transform: translateY(-6px) scale(0.995) rotate(-1deg);
+      }
+      80% {
+        transform: translateY(1px) scale(1) rotate(0.8deg);
+      }
+    }
+
+    .pain-character-caption {
+      font-weight: 700;
+      color: #F87171;
+      font-size: 1.05rem;
+      margin-bottom: 8px;
+    }
+
+    .pain-character-sub {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .pain-cards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .pain-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid #EF4444;
+      border-radius: var(--radius-md);
+      padding: 22px 24px;
+      transition: var(--transition);
+    }
+
+    .pain-card:hover {
+      transform: translateX(4px);
+      border-color: rgba(239, 68, 68, 0.4);
+      background: var(--bg-card-subtle);
+    }
+
+    .pain-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .pain-icon {
+      color: #EF4444;
+      font-size: 1.25rem;
+    }
+
+    .pain-card-title {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: #FFFFFF;
+    }
+
+    .pain-card-text {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 900px) {
+      .pain-points-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* -------------------------------------------------------------
+       MÉTODO ROL
+    -------------------------------------------------------------- */
+    .roll-section {
+      background: linear-gradient(180deg, rgba(11, 15, 25, 0.4) 0%, rgba(19, 27, 46, 0.6) 100%);
+      border-top: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .roll-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      margin-top: 20px;
+    }
+
+    .roll-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 36px 28px;
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .roll-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--border-focus);
+      box-shadow: 0 16px 36px var(--amber-glow);
+    }
+
+    .roll-letter {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
+      background: var(--amber-gradient);
+      color: #0B0F19;
+      font-size: 1.8rem;
+      font-weight: 900;
+      margin-bottom: 22px;
+      box-shadow: 0 6px 16px rgba(245, 158, 11, 0.35);
+    }
+
+    .roll-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 12px;
+    }
+
+    .roll-desc {
+      color: var(--text-secondary);
+      font-size: 0.98rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 860px) {
+      .roll-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* -------------------------------------------------------------
+       PIPELINE DE HERRAMIENTAS EN 4 PASOS
+    -------------------------------------------------------------- */
+    .pipeline-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-top: 40px;
+      position: relative;
+    }
+
+    .pipeline-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 26px 22px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      transition: var(--transition);
+    }
+
+    .pipeline-step:hover {
+      border-color: rgba(245, 158, 11, 0.4);
+      transform: translateY(-3px);
+    }
+
+    .step-number {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--amber);
+      background: rgba(245, 158, 11, 0.12);
+      padding: 4px 10px;
+      border-radius: 6px;
+      display: inline-block;
+      align-self: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .step-tool {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 6px;
+    }
+
+    .step-role {
+      font-size: 0.88rem;
+      color: var(--amber);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .step-desc {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    @media (max-width: 980px) {
+      .pipeline-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 580px) {
+      .pipeline-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* -------------------------------------------------------------
+       PROMPT CON CORCHETES (ANTES VS DESPUÉS)
+    -------------------------------------------------------------- */
+    .comparison-box {
+      margin-top: 60px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 40px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-top: 24px;
+    }
+
+    .compare-side {
+      background: #0B0F19;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .compare-bad {
+      border-top: 4px solid var(--rose);
+    }
+
+    .compare-good {
+      border-top: 4px solid var(--emerald);
+    }
+
+    .compare-badge {
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 4px 10px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-bottom: 14px;
+      align-self: flex-start;
+    }
+
+    .compare-bad .compare-badge {
+      background: var(--rose-bg);
+      color: var(--rose);
+    }
+
+    .compare-good .compare-badge {
+      background: var(--emerald-bg);
+      color: var(--emerald);
+    }
+
+    .prompt-code {
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: #E2E8F0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 16px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      margin-top: 8px;
+    }
+
+    .bracket {
+      color: var(--amber);
+      font-weight: 600;
+    }
+
+    .copy-btn-wrap {
+      margin-top: 14px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .btn-copy {
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: var(--amber);
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition);
+    }
+
+    .btn-copy:hover {
+      background: var(--amber);
+      color: #0B0F19;
+    }
+
+    @media (max-width: 800px) {
+      .comparison-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* -------------------------------------------------------------
+       FASE 3: DESEO (GAMIFICACIÓN EN SKOOL Y RUTA DE NIVELES)
+    -------------------------------------------------------------- */
+    .gamification-section {
+      background: radial-gradient(circle at 50% 0%, rgba(245, 158, 11, 0.08) 0%, transparent 60%);
+    }
+
+    .levels-roadmap {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      margin-top: 40px;
+    }
+
+    .level-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      position: relative;
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 28px;
+      align-items: center;
+      transition: var(--transition);
+    }
+
+    .level-card:hover {
+      border-color: rgba(245, 158, 11, 0.3);
+      background: var(--bg-card-subtle);
+    }
+
+    .level-badge-box {
+      text-align: center;
+      padding: 16px;
+      background: #0B0F19;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+    }
+
+    .level-num {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--amber);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 4px;
+    }
+
+    .level-req {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    .level-content h3 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 8px;
+    }
+
+    .level-content p {
+      color: var(--text-secondary);
+      font-size: 0.98rem;
+      line-height: 1.6;
+    }
+
+    .level-features {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .level-tag {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #E2E8F0;
+      font-size: 0.82rem;
+      font-weight: 500;
+      padding: 4px 12px;
+      border-radius: 9999px;
+    }
+
+    @media (max-width: 720px) {
+      .level-card {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+      .level-badge-box {
+        text-align: left;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+
+    /* 10 Categorías del PDF */
+    .pdf-categories-box {
+      margin-top: 48px;
+      background: #111827;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: var(--radius-xl);
+      padding: 40px;
+    }
+
+    .pdf-categories-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .pdf-badge {
+      background: var(--amber-gradient);
+      color: #0B0F19;
+      font-weight: 800;
+      font-size: 0.85rem;
+      padding: 4px 14px;
+      border-radius: 9999px;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+
+    .pdf-categories-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .category-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      font-size: 0.95rem;
+      color: #F1F5F9;
+      font-weight: 500;
+    }
+
+    .category-num {
+      font-family: var(--font-mono);
+      color: var(--amber);
+      font-weight: 700;
+      font-size: 0.9rem;
+      background: rgba(245, 158, 11, 0.1);
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 768px) {
+      .pdf-categories-grid {
+        grid-template-columns: 1fr;
+      }
+      .pdf-categories-box {
+        padding: 24px;
+      }
+    }
+
+    /* Misión Logros */
+    .mission-box {
+      margin-top: 40px;
+      background: linear-gradient(135deg, #17233D 0%, #111A2E 100%);
+      border: 1px solid var(--border-focus);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+    }
+
+    .mission-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .mission-questions {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .mission-q-card {
+      background: rgba(11, 15, 25, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      font-size: 0.92rem;
+      color: #CBD5E1;
+      line-height: 1.5;
+    }
+
+    .mission-q-num {
+      color: var(--amber);
+      font-weight: 800;
+      display: block;
+      margin-bottom: 6px;
+      font-size: 1.1rem;
+    }
+
+    @media (max-width: 860px) {
+      .mission-questions {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* -------------------------------------------------------------
+       PRUEBA SOCIAL Y COMUNIDAD REAL SKOOL
+    -------------------------------------------------------------- */
+    .social-proof-section {
+      background: #0E1424;
+      border-top: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .community-feed-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 40px;
+      align-items: center;
+      margin-bottom: 60px;
+    }
+
+    .community-feed-visual {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 16px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+    }
+
+    .community-feed-img {
+      width: 100%;
+      height: 480px;
+      object-fit: cover;
+      object-position: top;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: block;
+    }
+
+    .community-badge-float {
+      position: absolute;
+      bottom: 30px;
+      left: 30px;
+      right: 30px;
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-focus);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .badge-icon-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: var(--amber-gradient);
+      color: #0B0F19;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .community-text h3 {
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 16px;
+      line-height: 1.25;
+    }
+
+    .community-text p {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 40px;
+    }
+
+    .testimonial-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: var(--transition);
+    }
+
+    .testimonial-card:hover {
+      border-color: rgba(245, 158, 11, 0.3);
+      transform: translateY(-4px);
+    }
+
+    .test-status {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+      font-size: 0.92rem;
+    }
+
+    .test-before {
+      color: #F87171;
+      background: rgba(248, 113, 113, 0.08);
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      border-left: 3px solid #F87171;
+      line-height: 1.45;
+    }
+
+    .test-after {
+      color: #34D399;
+      background: rgba(52, 211, 153, 0.08);
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      border-left: 3px solid #34D399;
+      line-height: 1.45;
+    }
+
+    .test-author {
+      border-top: 1px solid var(--border-color);
+      padding-top: 14px;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+    }
+
+    .test-author strong {
+      color: #FFFFFF;
+      display: block;
+    }
+
+    @media (max-width: 992px) {
+      .community-feed-grid {
+        grid-template-columns: 1fr;
+      }
+      .testimonials-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* -------------------------------------------------------------
+       SOBRE PABLO MARDONES OPORTO
+    -------------------------------------------------------------- */
+    .about-box {
+      background: linear-gradient(135deg, #131B2E 0%, #0F172A 100%);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 56px 48px;
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 48px;
+      align-items: center;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .about-img-box {
+      text-align: center;
+      position: relative;
+      background: radial-gradient(circle at 50% 35%, rgba(245, 158, 11, 0.15), transparent 70%),
+                  linear-gradient(180deg, #18223B 0%, rgba(19, 27, 46, 0.6) 100%);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      border-radius: 40px;
+      padding: 36px 24px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4), 0 0 35px rgba(245, 158, 11, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .about-img-box:hover {
+      border-color: rgba(245, 158, 11, 0.5);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 45px rgba(245, 158, 11, 0.2);
+    }
+
+    .about-char-img {
+      width: 100%;
+      max-width: 290px;
+      height: auto;
+      border-radius: 28px;
+      filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.45));
+      animation: charThumbsRelaxed 5s ease-in-out infinite;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+      cursor: pointer;
+    }
+
+    .about-char-img:hover {
+      transform: scale(1.05) translateY(-8px);
+      filter: drop-shadow(0 20px 35px rgba(245, 158, 11, 0.4));
+    }
+
+    @keyframes charThumbsRelaxed {
+      0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-10px) rotate(-1.5deg);
+      }
+    }
+
+    .about-content h3 {
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .about-subtitle {
+      color: var(--amber);
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    .about-content p {
+      color: #CBD5E1;
+      font-size: 1.02rem;
+      line-height: 1.7;
+      margin-bottom: 18px;
+    }
+
+    .about-content blockquote {
+      border-left: 3px solid var(--amber);
+      padding-left: 18px;
+      margin-top: 24px;
+      font-style: italic;
+      color: #F1F5F9;
+      font-weight: 500;
+    }
+
+    @media (max-width: 860px) {
+      .about-box {
+        grid-template-columns: 1fr;
+        padding: 36px 24px;
+      }
+    }
+
+    /* -------------------------------------------------------------
+       FAQ (PREGUNTAS FRECUENTES)
+    -------------------------------------------------------------- */
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 40px;
+    }
+
+    .faq-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .faq-item.active {
+      border-color: rgba(245, 158, 11, 0.35);
+      background: var(--bg-card-subtle);
+    }
+
+    .faq-question {
+      width: 100%;
+      padding: 22px 26px;
+      background: none;
+      border: none;
+      color: #FFFFFF;
+      font-family: var(--font-sans);
+      font-size: 1.08rem;
+      font-weight: 700;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .faq-icon {
+      font-size: 1.4rem;
+      color: var(--amber);
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .faq-item.active .faq-icon {
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.35s ease;
+      padding: 0 26px;
+      color: var(--text-secondary);
+      font-size: 0.98rem;
+      line-height: 1.65;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 300px;
+      padding: 0 26px 22px 26px;
+    }
+
+    /* -------------------------------------------------------------
+       FASE 4: ACCIÓN (CALL TO ACTION FINAL)
+    -------------------------------------------------------------- */
+    .cta-final-section {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .cta-final-card {
+      background: radial-gradient(circle at 50% 20%, rgba(245, 158, 11, 0.15) 0%, transparent 70%),
+                  linear-gradient(180deg, #16223C 0%, #0F172A 100%);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      border-radius: var(--radius-xl);
+      padding: 72px 40px;
+      text-align: center;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-final-badge {
+      display: inline-block;
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: var(--amber);
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 6px 18px;
+      border-radius: 9999px;
+      margin-bottom: 24px;
+    }
+
+    .cta-final-title {
+      font-size: clamp(2.2rem, 3.8vw, 3.2rem);
+      font-weight: 800;
+      color: #FFFFFF;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+
+    .cta-final-desc {
+      color: #CBD5E1;
+      font-size: 1.2rem;
+      max-width: 680px;
+      margin: 0 auto 36px;
+      line-height: 1.6;
+    }
+
+    .cta-final-footer-text {
+      margin-top: 28px;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      font-style: italic;
+    }
+
+    /* -------------------------------------------------------------
+       FOOTER
+    -------------------------------------------------------------- */
+    footer {
+      border-top: 1px solid var(--border-color);
+      padding: 40px 0;
+      background: #070A12;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+      margin-top: 8px;
+    }
+
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: var(--amber);
+    }
+
+    /* -------------------------------------------------------------
+       TOAST DE NOTIFICACIÓN
+    -------------------------------------------------------------- */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #1E293B;
+      color: #F8FAFC;
+      border: 1px solid var(--amber);
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: var(--transition);
+      z-index: 100;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Glow -->
+  <div class="ambient-bg"></div>
+
+  <!-- Barra de Navegación -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="#" class="brand">
+        <div class="brand-icon">IA</div>
+        <span>Profes Libres <span class="brand-highlight">con IA</span></span>
+      </a>
+
+      <!-- Conteo Regresivo de Urgencia (Acceso Gratis 1 Semana) -->
+      <div class="nav-countdown-wrapper" title="¡Ingresa antes de que el Método R.O.L. pase a ser de pago!">
+        <div class="countdown-info-col">
+          <div class="countdown-tag-row">
+            <span class="countdown-pulse-dot"></span>
+            <span class="countdown-headline">Acceso Gratis Termina En:</span>
+          </div>
+          <span class="countdown-subtext">Antes de que el Método R.O.L. sea de pago</span>
+        </div>
+
+        <div class="countdown-timer">
+          <div class="timer-unit">
+            <span class="timer-num" id="cd-days">07</span>
+            <span class="timer-sub">DÍAS</span>
+          </div>
+          <span class="timer-sep">:</span>
+          <div class="timer-unit">
+            <span class="timer-num" id="cd-hours">00</span>
+            <span class="timer-sub">HRS</span>
+          </div>
+          <span class="timer-sep">:</span>
+          <div class="timer-unit">
+            <span class="timer-num" id="cd-minutes">00</span>
+            <span class="timer-sub">MIN</span>
+          </div>
+          <span class="timer-sep">:</span>
+          <div class="timer-unit timer-unit-sec">
+            <span class="timer-num" id="cd-seconds">00</span>
+            <span class="timer-sub">SEG</span>
+          </div>
+        </div>
+      </div>
+
+      <a href="https://www.skool.com/el-profe-digital-ia-1159/about" target="_blank" rel="noopener noreferrer" class="btn-cta btn-cta-nav">
+        Unirse Gratis
+      </a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       FASE 1: ATENCIÓN (HERO SECTION)
+  ============================================================= -->
+  <section class="hero-section" id="inicio">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-text">
+          <div class="badge-pill">
+            <span>🚀 COMUNIDAD DOCENTE 2026 · CHILE Y LATINOAMÉRICA</span>
+          </div>
+
+          <h1 class="hero-title">
+            Recupera de <span class="highlight">5 a 10 horas semanales</span> y vuelve a enseñar con pasión este 2026
+          </h1>
+
+          <p class="hero-subtitle">
+            <strong>No necesitas trabajar más horas ni llevarte pilas de pruebas a la mesa del comedor: necesitas un mejor sistema.</strong><br>
+            Aprende a delegar la burocracia escolar en Inteligencia Artificial adaptada al aula real, sin tecnicismos y sin perder tu sello pedagógico.
+          </p>
+
+          <div class="hero-cta-group">
+            <a href="https://www.skool.com/el-profe-digital-ia-1159/about" target="_blank" rel="noopener noreferrer" class="btn-cta">
+              👉 Únete Gratis a la Comunidad en Skool
+            </a>
+            <div class="friction-zero">
+              <svg fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clip-rule="evenodd"/>
+              </svg>
+              <span>100% Gratuito · Sin conocimientos técnicos previos · Acceso inmediato</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Personaje Hero Dinámico -->
+        <div class="hero-character-wrap">
+          <div class="hero-character-card">
+            <img src="assets/char-running.png" alt="Profe Robot con IA ganando tiempo" class="hero-img">
+            <div class="hero-character-badge">
+              <span class="dot"></span>
+              <span>¡Reloj a tu favor: menos papeleo, más vida!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra de Credibilidad -->
+      <div class="credibility-bar">
+        <div class="author-avatar-wrap">
+          <img src="assets/pablo-mardones.jpg" alt="Pablo Mardones Oporto" class="author-avatar-img" title="Pablo Mardones Oporto - Fundador">
+        </div>
+        <div class="author-info">
+          <h4>Creado por Pablo Mardones Oporto</h4>
+          <p>Profesor de Química con más de 6 años de experiencia en aulas públicas de Chile. Sé exactamente cuánto pesa el timbre del lunes a las 8:00 AM y el cansancio de planificar un domingo por la noche.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FASE 2: INTERÉS (EMPATÍA, PUNTOS DE DOLOR Y MÉTODO ROL)
+  ============================================================= -->
+  <section id="problema">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">La realidad docente que nadie cuenta</span>
+        <h2 class="section-title">¿Te suena familiar esta semana escolar?</h2>
+        <p class="section-desc">
+          Nadie que no se haya parado frente a 40 estudiantes con realidades diversas entiende lo que significa educar hoy. La vocación no desaparece en la sala: se apaga por lo que te exigen hacer fuera de ella.
+        </p>
+      </div>
+
+      <div class="pain-points-grid">
+        <!-- Personaje Estresado -->
+        <div class="pain-character-box">
+          <img src="assets/char-stressed.png" alt="Docente sobrecargado por burocracia" class="pain-character-img">
+          <div class="pain-character-caption">"El síndrome de supervivencia permanente"</div>
+          <p class="pain-character-sub">Vivir corriendo contra los plazos no es falta de compromiso. Es tener herramientas del siglo pasado para exigencias del 2026.</p>
+        </div>
+
+        <!-- 4 Tarjetas de Puntos de Dolor -->
+        <div class="pain-cards-list">
+          <div class="pain-card">
+            <div class="pain-card-header">
+              <span class="pain-icon">⚠️</span>
+              <h3 class="pain-card-title">1. Agotamiento silencioso en noches y fines de semana</h3>
+            </div>
+            <p class="pain-card-text">
+              Llegas a tu casa y la cabeza no se apaga. Corregir pruebas acumuladas, redactar informes y responder mensajes mientras tu familia cena o descansa sin ti.
+            </p>
+          </div>
+
+          <div class="pain-card">
+            <div class="pain-card-header">
+              <span class="pain-icon">📄</span>
+              <h3 class="pain-card-title">2. Síndrome de la "hoja en blanco" (45 y 90 min)</h3>
+            </div>
+            <p class="pain-card-text">
+              Diseñar secuencias didácticas completas, objetivos de aprendizaje (OA), indicadores y momentos de inicio, desarrollo y cierre sintiendo que reinventas la rueda cada trimestre.
+            </p>
+          </div>
+
+          <div class="pain-card">
+            <div class="pain-card-header">
+              <span class="pain-icon">📋</span>
+              <h3 class="pain-card-title">3. Burocracia, apoderados y adecuaciones (Decreto 83 / DUA)</h3>
+            </div>
+            <p class="pain-card-text">
+              Bitácoras, entrevistas de jefatura, fichas PIE y adaptaciones multinivel sin contar con horas no lectivas suficientes para hacerlo con la calma que tus estudiantes merecen.
+            </p>
+          </div>
+
+          <div class="pain-card">
+            <div class="pain-card-header">
+              <span class="pain-icon">🤯</span>
+              <h3 class="pain-card-title">4. Sobrecarga digital y miedo a quedar atrás</h3>
+            </div>
+            <p class="pain-card-text">
+              Decenas de aplicaciones nuevas cada mes y teóricos que jamás pisaron una escuela pública diciéndote que te quedarás obsoleto. Sientes la IA como una carga más en vez de una ayuda.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       MÉTODO ROL
+  ============================================================= -->
+  <section class="roll-section" id="metodo">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">La solución metodológica</span>
+        <h2 class="section-title">El Método ROL™: Menos papeleo, más vida</h2>
+        <p class="section-desc">
+          No necesitas ser programador. El Método ROL es un marco práctico diseñado para que la tecnología trabaje para ti, y no tú para la pantalla.
+        </p>
+      </div>
+
+      <div class="roll-grid">
+        <div class="roll-card">
+          <div class="roll-letter">R</div>
+          <h3 class="roll-title">Reducir el trabajo administrativo</h3>
+          <p class="roll-desc">
+            Automatiza informes de jefatura, rúbricas analíticas con descriptores graduados y pautas de cotejo en minutos, no en días. La IA es tu asistente para el primer borrador.
+          </p>
+        </div>
+
+        <div class="roll-card">
+          <div class="roll-letter">O</div>
+          <h3 class="roll-title">Optimizar el aprendizaje significativo</h3>
+          <p class="roll-desc">
+            Diseña experiencias didácticas conectadas con el mundo real de tus alumnos: preguntas detonantes, retos colaborativos y adecuaciones DUA que despiertan curiosidad genuina.
+          </p>
+        </div>
+
+        <div class="roll-card">
+          <div class="roll-letter">L</div>
+          <h3 class="roll-title">Liberar tiempo real para ti y tu familia</h3>
+          <p class="roll-desc">
+            Cierra tu computador cuando suena el timbre de salida. Las tardes, los fines de semana y el descanso mental vuelven a pertenecerte a ti y a tus seres queridos.
+          </p>
+        </div>
+      </div>
+
+      <!-- Pipeline de 4 Pasos -->
+      <div style="margin-top: 70px;">
+        <div class="section-header" style="margin-bottom: 30px;">
+          <span class="section-eyebrow">Ecosistema Integrado</span>
+          <h3 class="section-title" style="font-size: 2rem;">El Pipeline de 4 Pasos: Tu Asistente Pedagógico 24/7</h3>
+          <p class="section-desc">En lugar de saltar caóticamente entre 20 pestañas, articulamos un flujo de trabajo fluido con herramientas 100% gratuitas:</p>
+        </div>
+
+        <div class="pipeline-grid">
+          <div class="pipeline-step">
+            <span class="step-number">PASO 01</span>
+            <div class="step-tool">Claude</div>
+            <div class="step-role">Co-Docente de Razonamiento</div>
+            <p class="step-desc">Diseña secuencias didácticas profundas, adecuaciones DUA y rúbricas con vocabulario pedagógico riguroso.</p>
+          </div>
+
+          <div class="pipeline-step">
+            <span class="step-number">PASO 02</span>
+            <div class="step-tool">Tichi</div>
+            <div class="step-role">Generador Rápido de Instrumentos</div>
+            <p class="step-desc">Crea guías de ejercicios, tickets de salida y cuestionarios adaptados por nivel de dificultad en un clic.</p>
+          </div>
+
+          <div class="pipeline-step">
+            <span class="step-number">PASO 03</span>
+            <div class="step-tool">NotebookLM</div>
+            <div class="step-role">Archivero Curricular Inteligente</div>
+            <p class="step-desc">Sube las bases del Mineduc o tus textos de estudio para consultar y citar fuentes institucionales sin alucinaciones.</p>
+          </div>
+
+          <div class="pipeline-step">
+            <span class="step-number">PASO 04</span>
+            <div class="step-tool">Canva / Drive</div>
+            <div class="step-role">Presentación y Distribución</div>
+            <p class="step-desc">Convierte esquemas en diapositivas visuales e infografías listas para imprimir o proyectar en tu clase.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comparativa Prompt Quirúrgico (Antes vs Después) -->
+      <div class="comparison-box">
+        <div style="text-align: center; max-width: 680px; margin: 0 auto;">
+          <span class="badge-pill">Sintaxis Estandarizada</span>
+          <h3 style="font-size: 1.8rem; font-weight: 800; color: #FFFFFF; margin-bottom: 10px;">
+            El Secreto del "Prompting Quirúrgico"
+          </h3>
+          <p style="color: var(--text-secondary); font-size: 0.95rem;">
+            Olvídate de pedirle cosas vagas a la IA como <em>"hazme una prueba"</em>. En la comunidad aplicas la fórmula:<br>
+            <strong style="color: var(--amber);">[Actúa como + Experto] + [Contexto con corchetes] + [Formato de salida]</strong>
+          </p>
+        </div>
+
+        <div class="comparison-grid">
+          <div class="compare-side compare-bad">
+            <span class="compare-badge">❌ El Prompt Común (Resultado Genérico)</span>
+            <div class="prompt-code">"Hazme una clase de Ciencias para primero medio sobre los gases que sea entretenida."</div>
+            <p style="font-size: 0.85rem; color: #F87171; margin-top: 12px;">
+              ⚠️ Resultado: Actividades superficiales, sin alineación curricular, sin criterios DUA y que te obligan a corregir todo a mano durante horas.
+            </p>
+          </div>
+
+          <div class="compare-side compare-good">
+            <span class="compare-badge">✅ Prompt Quirúrgico del Método ROL</span>
+            <div class="prompt-code" id="promptSample"><span class="bracket">[Actúa como un Diseñador Instruccional Senior experto en Ciencias Naturales y Decreto 83 en Chile]</span>
+
+Contexto:
+- Nivel: <span class="bracket">[1° Medio, Educación Pública]</span>
+- Contenido: <span class="bracket">[Leyes de los gases y teoría cinético molecular]</span>
+- Tiempo: <span class="bracket">[Bloque de 90 minutos]</span>
+- Diversidad: <span class="bracket">[Comprensión lectora heterogénea y apoyos visuales DUA]</span>
+
+Formato de Salida:
+Genera una secuencia didáctica en tabla Markdown:
+1. Inicio (15 min): Pregunta detonante cotidiana (olla a presión o neumáticos en frío).
+2. Desarrollo (60 min): Actividad colaborativa con roles claros y apoyos visuales.
+3. Cierre (15 min): Ticket de salida con 2 preguntas metacognitivas y escala Likert.</div>
+            <div class="copy-btn-wrap">
+              <button class="btn-copy" onclick="copyPrompt()">
+                <span id="copyIcon">📋</span> <span id="copyText">Copiar Prompt</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FASE 3: DESEO (GAMIFICACIÓN, 100 PROMPTS Y PRUEBA SOCIAL)
+  ============================================================= -->
+  <section class="gamification-section" id="gamificacion">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">Comunidad Viva en Skool</span>
+        <h2 class="section-title">Avanzas al ritmo que participas</h2>
+        <p class="section-desc">
+          En <strong>Profes Libres con IA</strong> no eres un espectador pasivo de cursos grabados. Es un espacio gamificado donde desbloqueas recursos de alto impacto conforme compartes y aprendes:
+        </p>
+      </div>
+
+      <!-- Roadmap de Niveles -->
+      <div class="levels-roadmap">
+        <div class="level-card">
+          <div class="level-badge-box">
+            <div class="level-num">Nivel 1</div>
+            <div class="level-req">0 pts · Al Entrar</div>
+          </div>
+          <div class="level-content">
+            <h3>"Profesor en Inicio" — Método ROL Estándar</h3>
+            <p>Acceso inmediato al marco de trabajo con tutoriales paso a paso para planificar tus clases, evaluaciones y rúbricas con Gemini, ChatGPT y Claude, más el foro de bienvenida para docentes.</p>
+            <div class="level-features">
+              <span class="level-tag">Desbloqueo Inmediato</span>
+              <span class="level-tag">Gemini · ChatGPT · Claude</span>
+              <span class="level-tag">Networking Docente</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="level-card" style="border-color: rgba(245, 158, 11, 0.4); background: linear-gradient(135deg, rgba(245, 158, 11, 0.05), rgba(19, 27, 46, 0.8));">
+          <div class="level-badge-box" style="border-color: var(--amber);">
+            <div class="level-num">Nivel 2</div>
+            <div class="level-req">5 Likes en Foro</div>
+          </div>
+          <div class="level-content">
+            <h3>"Profe Curioso" — PDF "100 Prompts Hechos a Mano"</h3>
+            <p>Desbloquea el compilado definitivo con 100 fórmulas exactas probadas en sala de clases para resolver el 90% de tus tareas pedagógicas y burocráticas.</p>
+            <div class="level-features">
+              <span class="level-tag" style="color: var(--amber);">10 Categorías Especializadas</span>
+              <span class="level-tag">10 Prompts por Categoría</span>
+              <span class="level-tag">Listo para Copiar y Pegar</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="level-card">
+          <div class="level-badge-box">
+            <div class="level-num">Nivel 3</div>
+            <div class="level-req">20 Likes en Foro</div>
+          </div>
+          <div class="level-content">
+            <h3>"Profe en Acción" — Módulo 3 Premium y Sesiones en Vivo</h3>
+            <p>Acceso a flujos avanzados de NotebookLM y Tichi, sesiones periódicas de consultoría pedagógica en vivo con Pablo Mardones y banco de prompts para jefaturas complejas.</p>
+            <div class="level-features">
+              <span class="level-tag">Sesiones en Vivo</span>
+              <span class="level-tag">Casos Complejos de Aula</span>
+              <span class="level-tag">Mentoría Directa</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detalle de las 10 Categorías del PDF -->
+      <div class="pdf-categories-box">
+        <div class="pdf-categories-header">
+          <span class="pdf-badge">Desbloqueable en Nivel 2</span>
+          <h3 style="font-size: 1.8rem; font-weight: 800; color: #FFFFFF; margin-bottom: 8px;">
+            El Banco de "100 Prompts Hechos a Mano"
+          </h3>
+          <p style="color: var(--text-secondary); max-width: 650px; margin: 0 auto; font-size: 0.95rem;">
+            10 categorías exhaustivas para que nunca más te enfrentes a una pantalla en blanco:
+          </p>
+        </div>
+
+        <div class="pdf-categories-grid">
+          <div class="category-item">
+            <span class="category-num">01</span>
+            <span>Planificaciones de 45 y 90 minutos (Inicio, Desarrollo y Cierre)</span>
+          </div>
+          <div class="category-item">
+            <span class="category-num">02</span>
+            <span>Rúbricas analíticas y holísticas con descriptores graduados</span>
+          </div>
+          <div class="category-item">
+            <span class="category-num">03</span>
+            <span>Evaluaciones sumativas y formativas con pauta de corrección</span>
+          </div>
+          <div class="category-item">
+            <span class="category-num">04</span>
+            <span>Guías de aprendizaje escalonadas por nivel de dificultad</span>
+          </div>
+          <div class="category-item">
+            <span class="category-num">05</span>
+            <span>Adecuaciones curriculares bajo Decreto 83 y principios DUA</span>
+          </div>
+          <div class="category-item">
+            <span class="category-num">06</span>
+            <span>Profesor Jefe y apoderados (correos, citaciones e informes)</span>
+          </div>
+          <div class="category-item">
+            <span class="category-num">07</span>
+            <span>Proyectos de Aprendizaje Basado en Proyectos (ABP)</span>
+          </div>
+          <div class="category-item">
+            <span class="category-num">08</span>
+            <span>Desarrollo profesional docente y portafolios formativos</span>
+          </div>
+          <div class="category-item">
+            <span class="category-num">09</span>
+            <span>Recursos visuales y prompts para diagramas de clase</span>
+          </div>
+          <div class="category-item">
+            <span class="category-num">10</span>
+            <span>Metodologías activas (Flipped Classroom, Gamificación y ABP)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Misión Logros -->
+      <div class="mission-box">
+        <div class="mission-title">
+          <span>🎯 Tu Primera Misión al Entrar: La Misión "Logros"</span>
+        </div>
+        <p style="color: #CBD5E1; font-size: 0.95rem;">
+          Para que notes el impacto de inmediato, tu bienvenida en Skool comienza respondiendo 3 preguntas de reflexión que transformarán tu relación con el tiempo docente:
+        </p>
+
+        <ul class="mission-questions">
+          <li class="mission-q-card">
+            <span class="mission-q-num">01</span>
+            <strong>¿Cuánto tardabas antes?</strong> Cuántas horas del último fin de semana le regalaste al papeleo del colegio en lugar de a tu descanso familiar.
+          </li>
+          <li class="mission-q-card">
+            <span class="mission-q-num">02</span>
+            <strong>¿Cuánto tardas con IA?</strong> Cuál es esa tarea administrativa recurrente que ahora logras resolver en menos de 10 minutos.
+          </li>
+          <li class="mission-q-card">
+            <span class="mission-q-num">03</span>
+            <strong>¿Qué mejorarías del prompt?</strong> Cómo adaptas el tono, los ejemplos y el contexto a las características específicas de tus estudiantes.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PRUEBA SOCIAL Y COMUNIDAD REAL
+  ============================================================= -->
+  <section class="social-proof-section" id="comunidad">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">Comunidad Activa</span>
+        <h2 class="section-title">Profesores reales en aulas reales</h2>
+        <p class="section-desc">
+          Docentes de Educación Básica, Media, Educación Diferencial (PIE), Matemáticas, Química, Lenguaje e Historia de todo Chile y Latinoamérica ya están compartiendo sus experiencias en Skool.
+        </p>
+      </div>
+
+      <!-- Muestra del Feed Real de Skool -->
+      <div class="community-feed-grid">
+        <div class="community-feed-visual">
+          <img src="assets/community-skool.jpg" alt="Comunidad Profes Libres con IA en Skool" class="community-feed-img">
+          <div class="community-badge-float">
+            <div class="badge-icon-wrap">👥</div>
+            <div>
+              <strong style="color: #FFFFFF; font-size: 1.05rem; display: block;">Espacio Colaborativo en Skool</strong>
+              <span style="color: var(--text-secondary); font-size: 0.88rem;">Profesores presentándose y compartiendo prompts cada día</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="community-text">
+          <h3>Un espacio seguro, sin juicios y enfocado en la práctica</h3>
+          <p>
+            Aquí no hay tecnicismos intimidantes. Nuestra filosofía es clara: <strong>"No estamos para ser perfeccionistas, sino para ir avanzando y probando"</strong>.
+          </p>
+          <p>
+            Pregunta con confianza, encuentra docentes de tu misma asignatura, copia las plantillas que ya les funcionan a otros colegas y celebra el tiempo libre que comienzas a recuperar desde la primera semana.
+          </p>
+          <a href="https://www.skool.com/el-profe-digital-ia-1159/about" target="_blank" rel="noopener noreferrer" class="btn-cta">
+            Conoce a la Comunidad en Skool
+          </a>
+        </div>
+      </div>
+
+      <!-- Testimonios Reales con Estructura Antes vs Ahora -->
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="test-status">
+            <div class="test-before">
+              <strong>Antes:</strong> [TESTIMONIO REAL - "Llegaba a las 18:30 y seguía frente a la pantalla hasta las 23:00 planificando para 4 cursos. Los domingos vivía con angustia pensando en el lunes."]
+            </div>
+            <div class="test-after">
+              <strong>Ahora:</strong> [TESTIMONIO REAL - "Con el Método ROL en Claude, redacto las guías de toda la quincena en 40 minutos en mis horas no lectivas. El fin de semana es 100% familiar."]
+            </div>
+          </div>
+          <div class="test-author">
+            <strong>[Docente de Lenguaje y Comunicación]</strong>
+            <span>Región del Biobío, Chile</span>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="test-status">
+            <div class="test-before">
+              <strong>Antes:</strong> [TESTIMONIO REAL - "Las adecuaciones de Decreto 83 y los informes del PIE eran un martirio interminable. Sentía que improvisaba y que no daba abasto."]
+            </div>
+            <div class="test-after">
+              <strong>Ahora:</strong> [TESTIMONIO REAL - "NotebookLM me sintetiza el currículum y las rúbricas quedan impecables. La educadora diferencial me felicitó por la claridad."]
+            </div>
+          </div>
+          <div class="test-author">
+            <strong>[Profesor de Matemáticas y Profesor Jefe]</strong>
+            <span>Santiago, Chile</span>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="test-status">
+            <div class="test-before">
+              <strong>Antes:</strong> [TESTIMONIO REAL - "Le tenía recelo a la Inteligencia Artificial porque creía que era trampa o que iba a deshumanizar mis clases."]
+            </div>
+            <div class="test-after">
+              <strong>Ahora:</strong> [TESTIMONIO REAL - "Entendí que la IA no reemplaza mi criterio: lo potencia. Ahora mis clases tienen más debate y dinamismo porque no estoy agotada."]
+            </div>
+          </div>
+          <div class="test-author">
+            <strong>[Profesora de Ciencias Naturales]</strong>
+            <span>Valparaíso, Chile</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SOBRE PABLO MARDONES OPORTO
+  ============================================================= -->
+  <section id="sobre-pablo">
+    <div class="container">
+      <div class="about-box">
+        <div class="about-img-box">
+          <img src="assets/char-thumbsup.png" alt="Pablo Mardones y el Método ROL" class="about-char-img">
+        </div>
+
+        <div class="about-content">
+          <span class="badge-pill">Tu Colega y Guía</span>
+          <h3>Pablo Mardones Oporto</h3>
+          <span class="about-subtitle">Profesor de Química en activo y Fundador de "Profes Libres con IA"</span>
+
+          <p>
+            No soy un programador de Silicon Valley ni un consultor de oficina que viene a decirte desde un púlpito cómo deberías hacer tus clases. Durante más de 6 años he estado de pie en salas de colegios públicos de Chile, con tiza, plumón y 40 estudiantes con realidades complejas.
+          </p>
+
+          <p>
+            Conozco en carne propia el cansancio de salir de una jornada agotadora, atender apoderados en los recreos y luego llegar a la casa a escribir una prueba desde cero. En 2023 estuve al borde del colapso vocacional.
+          </p>
+
+          <p>
+            Descubrí que la Inteligencia Artificial, bien encauzada con rigor pedagógico, no reemplaza al docente: <strong>lo rescata de la asfixia burocrática</strong>.
+          </p>
+
+          <blockquote>
+            "Ningún profesor debería tener que elegir entre ser un docente de excelencia y tener una vida personal digna."
+          </blockquote>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FAQ (PREGUNTAS FRECUENTES)
+  ============================================================= -->
+  <section id="faq">
+    <div class="container container-narrow">
+      <div class="section-header">
+        <span class="section-eyebrow">Dudas Habituales</span>
+        <h2 class="section-title">Preguntas Frecuentes</h2>
+        <p class="section-desc">Respuestas directas, claras y sin letra chica para docentes.</p>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item active">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>¿Tiene algún costo unirse a la comunidad en Skool?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p><strong>No, es 100% gratuita.</strong> El acceso a la comunidad en Skool, las lecciones fundamentales del Método ROL y las plantillas de inicio no tienen ningún costo. Nuestra misión es democratizar estas herramientas para todos los docentes de Latinoamérica.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>¿Necesito saber de programación o tener experiencia previa con IA?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Para nada. Si sabes enviar un mensaje por WhatsApp o escribir un correo electrónico, ya tienes todas las habilidades necesarias. Te mostramos paso a paso qué botones presionar y qué plantillas exactas copiar y pegar.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>¿La Inteligencia Artificial reemplaza mi rol docente o deshumaniza el aula?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Todo lo contrario. La IA se encarga de las tareas repetitivas y mecánicas (redactar tablas, organizar pautas, formatear ejercicios). Tú aportas lo verdaderamente insustituible: la empatía, el criterio pedagógico, el vínculo afectivo y la mirada atenta sobre las necesidades de tus alumnos.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>¿Sirve para mi asignatura y para el currículum de mi país?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Totalmente. El Método ROL funciona para cualquier asignatura (ciencias, humanidades, matemáticas, artes, idiomas, educación física) y te enseña a alimentar a la IA con las bases curriculares oficiales de tu propio Ministerio de Educación (como los OA del Mineduc en Chile o los estándares de tu país).</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>¿Las herramientas que enseñan requieren pagar suscripciones mensuales?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>El 95% de todo lo que enseñamos se realiza con las versiones completamente gratuitas de Claude, NotebookLM, Canva, Gemini y Google Drive. No necesitas gastar un solo peso extra en software para liberar horas de tu semana.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FASE 4: ACCIÓN (CALL TO ACTION FINAL)
+  ============================================================= -->
+  <section class="cta-final-section" id="unirse">
+    <div class="container container-narrow">
+      <div class="cta-final-card">
+        <span class="cta-final-badge">El Año 2026 Ya Comenzó</span>
+        <h2 class="cta-final-title">El aula te necesita con energía.<br>Tu familia te necesita presente.</h2>
+        <p class="cta-final-desc">
+          Da el primer paso hoy. Entra a la comunidad, descarga tus primeras plantillas y comprueba cómo el Método ROL te devuelve tus fines de semana desde esta misma semana.
+        </p>
+
+        <a href="https://www.skool.com/el-profe-digital-ia-1159/about" target="_blank" rel="noopener noreferrer" class="btn-cta" style="font-size: 1.15rem; padding: 18px 40px;">
+          👉 Unirme Gratis a Profes Libres con IA en Skool
+        </a>
+
+        <div class="friction-zero" style="margin-top: 20px;">
+          <svg fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+          </svg>
+          <span>Acceso instantáneo · Comunidad activa en Skool · Registro 100% gratuito</span>
+        </div>
+
+        <p class="cta-final-footer-text">
+          "Recuperar tu tiempo libre no es un lujo: es la única forma sostenible de seguir amando enseñar."
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-content">
+      <p>© 2026 <strong>Profes Libres con IA</strong>. Desarrollado con pasión docente por Pablo Mardones Oporto.</p>
+      <ul class="footer-links">
+        <li><a href="https://www.skool.com/el-profe-digital-ia-1159/about" target="_blank" rel="noopener noreferrer">Comunidad Skool</a></li>
+        <li><a href="#metodo">Método ROL</a></li>
+        <li><a href="#faq">Preguntas Frecuentes</a></li>
+      </ul>
+      <p style="margin-top: 10px; font-size: 0.8rem;">Plataforma independiente creada para la comunidad docente de Chile y Latinoamérica.</p>
+    </div>
+  </footer>
+
+  <!-- Notificación Toast para Copiar Prompt -->
+  <div class="toast" id="copyToast">
+    <span>✅</span>
+    <span>¡Prompt copiado al portapapeles!</span>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    // FAQ Accordion
+    function toggleFaq(btn) {
+      const item = btn.parentElement;
+      const isActive = item.classList.contains('active');
+      
+      // Cerrar otros
+      document.querySelectorAll('.faq-item').forEach(el => {
+        el.classList.remove('active');
+      });
+
+      // Toggle actual
+      if (!isActive) {
+        item.classList.add('active');
+      }
+    }
+
+    // Copiar Prompt
+    function copyPrompt() {
+      const promptEl = document.getElementById('promptSample');
+      const textToCopy = promptEl.innerText;
+      
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        const btnText = document.getElementById('copyText');
+        const originalText = btnText.innerText;
+        btnText.innerText = '¡Copiado!';
+        
+        const toast = document.getElementById('copyToast');
+        toast.classList.add('show');
+        
+        setTimeout(() => {
+          btnText.innerText = originalText;
+          toast.classList.remove('show');
+        }, 2500);
+      }).catch(err => {
+        console.error('Error al copiar:', err);
+      });
+    }
+
+    // Header sombra dinámica al hacer scroll
+    window.addEventListener('scroll', () => {
+      const navbar = document.querySelector('.navbar');
+      if (window.scrollY > 40) {
+        navbar.style.borderBottomColor = 'rgba(245, 158, 11, 0.2)';
+        navbar.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.4)';
+      } else {
+        navbar.style.borderBottomColor = 'rgba(255, 255, 255, 0.08)';
+        navbar.style.boxShadow = 'none';
+      }
+    });
+
+    // Conteo Regresivo de 1 Semana con Reinicio Automático
+    (function initWeeklyCountdown() {
+      const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+      const STORAGE_KEY = 'profes_libres_countdown_deadline_v1';
+      
+      let deadline = parseInt(localStorage.getItem(STORAGE_KEY), 10);
+      const now = Date.now();
+      
+      // Si no existe, es inválido o ya expiró, reinicia a 7 días
+      if (!deadline || isNaN(deadline) || now >= deadline) {
+        deadline = now + ONE_WEEK_MS;
+        localStorage.setItem(STORAGE_KEY, deadline.toString());
+      }
+
+      function updateTimer() {
+        const current = Date.now();
+        let diff = deadline - current;
+
+        // Si llega a cero, reiniciar inmediatamente a 7 días
+        if (diff <= 0) {
+          deadline = Date.now() + ONE_WEEK_MS;
+          localStorage.setItem(STORAGE_KEY, deadline.toString());
+          diff = ONE_WEEK_MS;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+
+        const pad = (n) => String(n).padStart(2, '0');
+
+        const elD = document.getElementById('cd-days');
+        const elH = document.getElementById('cd-hours');
+        const elM = document.getElementById('cd-minutes');
+        const elS = document.getElementById('cd-seconds');
+
+        if (elD) elD.textContent = pad(days);
+        if (elH) elH.textContent = pad(hours);
+        if (elM) elM.textContent = pad(minutes);
+        if (elS) elS.textContent = pad(seconds);
+      }
+
+      updateTimer();
+      setInterval(updateTimer, 1000);
+    })();
+  </script>
+</body>
+</html>
